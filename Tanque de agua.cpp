@@ -1,105 +1,95 @@
-#include "iostream"
-#include "stdlib.h"
-//Equipo #8
+#include <iostream>
+#include <cctype> // Para usar la funci�n toupper
+#include <stdlib.h> // Para usar system("color F1")
 
 using namespace std;
 
-class Controlador {                     // Clase  POO
-public: 
-//atributos
-bool Tanque_Lleno=0;
-bool Bomba_Encendida=0;
-bool Cisterna_con_poca_agua=0;
-bool Tanque_con_poca_agua=0;
-//Constructor
-Controlador();
-//Metodos
-void Menu();
-void Estado();
+class TurbinaControl {
+private:
+    bool tanquePocaAgua=0;
+    bool cisternaPocaAgua=0;
+    bool turbinaEncendida=0;
+    bool tanqueLleno=0;
+
+public:
+    // Constructor de la clase TurbinaControl
+    TurbinaControl();
+
+    // M�todo para pedir datos al usuario
+    void pedirDatos();
+
+    // M�todo para controlar la turbina seg�n los datos ingresados
+    void controlTurbina();
 };
 
-Controlador::Controlador(){ }
+// Implementaci�n del constructor de la clase TurbinaControl
+TurbinaControl::TurbinaControl(){}
 
-void Controlador::Menu(){
-short boton=0;
+// Implementaci�n del m�todo para solicitar datos al usuario
+void TurbinaControl::pedirDatos() {
+    char input;
 
-do{ system("cls");
-cout <<"\n        Tu Cisterna del agua:       ";
-cout <<"\n1-Tiene poca agua  ";
-cout <<"\n2-Tiene mucha agua ";
-cout <<"\n                        "<<endl;
-cin>>boton;
+    // Solicitar si el tanque est� lleno
+    do {
+        cout << "Esta el tanque lleno? (S/N): ";
+        cin >> input;
+        input = toupper(input);
+        system("cls");
+    } while (input != 'S' && input != 'N');
+    tanqueLleno = (input == 'S');
 
-switch(boton){
+if(input=='N'){
+    // Solicitar si el tanque tiene poca agua
+    do {
+        cout << "\nEl tanque tiene poca agua? (S/N): ";
+        cin >> input;
+        input = toupper(input);
+        system("cls");
+    } while (input != 'S' && input != 'N');
+    tanquePocaAgua = (input == 'S');
 
-case 1:{ Tanque_con_poca_agua=0; break;}
+    // Solicitar si la cisterna tiene poca agua
+    do {
+        cout << "La cisterna tiene agua? (S/N): ";
+        cin >> input;
+        input = toupper(input);
+        system("cls");
+    } while (input != 'S' && input != 'N');
+    cisternaPocaAgua = (input == 'S');
 
-case 2:{ Tanque_con_poca_agua=1; break;}
-
-default:{  system("cls"); cout<<"Valor incorrecto digite 1 o 2!"<<endl; break;}
-
-}//suich
-}while( (boton!=1)&&(boton!=2) );
-
-do{ system("cls");
-cout <<"\n        Bomba del agua:       ";
-cout <<"\n1-Esta Apagada ";
-cout <<"\n2-Esta Encendida ";
-cout <<"\n                        "<<endl;
-cin>>boton;
-
-switch(boton){
-
-case 1:{ Bomba_Encendida=0; break;}
-
-case 2:{ Bomba_Encendida=1; break;}
-
-default:{  system("cls"); cout<<"Valor incorrecto digite 1 o 2!"<<endl; break;}
-
-}//suich
-}while( (boton!=1)&&(boton!=2) );
-
-do{ system("cls");
-cout <<"\n        Tanque de agua:       ";
-cout <<"\n1-Tiene poca agua  ";
-cout <<"\n2-Tiene mucha agua ";
-cout <<"\n                        "<<endl;
-cin>>boton;
-
-switch(boton){
-
-case 1:{ Tanque_con_poca_agua=0; break;}
-
-case 2:{ Tanque_con_poca_agua=1; break;}
-
-default:{  system("cls"); cout<<"Valor incorrecto digite 1 o 2!"<<endl; break;}
-
-}//suich
-}while( (boton!=1)&&(boton!=2) );
-
-
-if((Bomba_Encendida==0)&&(Cisterna_con_poca_agua==1)&&(Tanque_con_poca_agua==1)) { Tanque_Lleno=1; }//esta lleno
-else{ Tanque_Lleno=0;}// esta vacio o llenandose 
-
-system("cls");
+    // Solicitar si la turbina est� encendida
+    do {
+        cout << "Esta la turbina encendida? (S/N): ";
+        cin >> input;
+        input = toupper(input);
+        system("cls");
+    } while (input != 'S' && input != 'N');
+    turbinaEncendida = (input == 'S');
+}
 }
 
-void Controlador::Estado(){
-if(Tanque_Lleno==1){ cout <<"\nEl tanque de agua esta lleno. "<<endl; }//esta lleno
-
-else if((Bomba_Encendida==1)&&(Cisterna_con_poca_agua==1)&&(Tanque_con_poca_agua==0)) { cout <<"\nLa sisterna tiene agua, la turbina esta encendida y el tanque esta llenandose el tanque.   "<<endl; }//esta lleno
-
-else if((Cisterna_con_poca_agua==0)&&(Tanque_con_poca_agua==1)) { cout <<"\nEl tanque no esta lleno, pero tiene sufisiente agua, la turbina esta esperando que se llene la sisterna.   "<<endl; }//esta lleno
-
-else if((Cisterna_con_poca_agua==0)&&(Tanque_con_poca_agua==0)) { cout <<"\nHay poca agua en el tanque, pero no se puede encender la turbina xq no hay agua en la sisterna.   "<<endl; }//esta lleno
-
-else{ cout <<"\n  Error de sistema   "<<endl;}// esta vacio o llenandose 	
-	
+// Implementaci�n del m�todo para controlar la turbina seg�n los datos ingresados
+void TurbinaControl::controlTurbina() {
+    // Determinar si la turbina debe apagarse o encenderse seg�n las condiciones
+    if (cisternaPocaAgua && turbinaEncendida) {
+        cout << "\nLa turbina debe apagarse." << endl;
+    } else if (turbinaEncendida && tanqueLleno) {
+        cout << "\nLa turbina debe apagarse." << endl;
+    } else if (tanquePocaAgua && !cisternaPocaAgua && !turbinaEncendida) {
+        cout << "\nLa turbina debe encenderse." << endl;
+    } else {
+        cout << "\nNo se requiere ninguna accion." << endl;
+    }
+system("pause");
 }
 
-// programa 
-int main(){
-system("color F1"); system("cls"); Controlador agua;//declaraacion de objeto
-agua.Menu();  agua.Estado(); system("pause"); //interaccion con metodos del objeto
-return 0;
-}
+int main() {
+    system("color 1F"); // Cambiar el color de la consola a blanco sobre fondo azul claro
+    cout << "\tPROGRAMA DE CONTROL DE UNA TURBINA" << endl;
+    TurbinaControl control; //declaracion del objeto
+    control.pedirDatos();
+    control.controlTurbina();
+
+    return 0;
+}
+

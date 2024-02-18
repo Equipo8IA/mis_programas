@@ -15,7 +15,7 @@ public:
     // Constructor de la clase TurbinaControl
     TurbinaControl();
 
-    // M�todo para pedir datos al usuario
+    // Metodo para pedir datos al usuario
     void pedirDatos();
 
     // M�todo para controlar la turbina seg�n los datos ingresados

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cctype> // Para usar la funci�n toupper
-#include <stdlib.h> // Para usar system("color F1")
+#include <stdlib.h> // Para usar system pause 
+#include <limits> //Para limpiar el buffer
 
 using namespace std;
 
@@ -15,7 +16,7 @@ public:
     // Constructor de la clase TurbinaControl
     TurbinaControl();
 
-    // Metodo para pedir datos al usuario
+    // M�todo para pedir datos al usuario
     void pedirDatos();
 
     // M�todo para controlar la turbina seg�n los datos ingresados
@@ -37,6 +38,7 @@ void TurbinaControl::pedirDatos() {
         system("cls");
     } while (input != 'S' && input != 'N');
     tanqueLleno = (input == 'S');
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
 if(input=='N'){
     // Solicitar si el tanque tiene poca agua
@@ -44,25 +46,27 @@ if(input=='N'){
         cout << "\nEl tanque tiene poca agua? (S/N): ";
         cin >> input;
         input = toupper(input);
-        system("cls");
+
     } while (input != 'S' && input != 'N');
     tanquePocaAgua = (input == 'S');
+   cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     // Solicitar si la cisterna tiene poca agua
     do {
         cout << "La cisterna tiene agua? (S/N): ";
         cin >> input;
         input = toupper(input);
-        system("cls");
+
     } while (input != 'S' && input != 'N');
     cisternaPocaAgua = (input == 'S');
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     // Solicitar si la turbina est� encendida
     do {
         cout << "Esta la turbina encendida? (S/N): ";
         cin >> input;
         input = toupper(input);
-        system("cls");
+
     } while (input != 'S' && input != 'N');
     turbinaEncendida = (input == 'S');
 }
@@ -73,10 +77,13 @@ void TurbinaControl::controlTurbina() {
     // Determinar si la turbina debe apagarse o encenderse seg�n las condiciones
     if (cisternaPocaAgua && turbinaEncendida) {
         cout << "\nLa turbina debe apagarse." << endl;
+        turbinaEncendida=0;
     } else if (turbinaEncendida && tanqueLleno) {
+        turbinaEncendida=0;
         cout << "\nLa turbina debe apagarse." << endl;
     } else if (tanquePocaAgua && !cisternaPocaAgua && !turbinaEncendida) {
         cout << "\nLa turbina debe encenderse." << endl;
+         turbinaEncendida=1;
     } else {
         cout << "\nNo se requiere ninguna accion." << endl;
     }
@@ -84,7 +91,6 @@ system("pause");
 }
 
 int main() {
-    system("color 1F"); // Cambiar el color de la consola a blanco sobre fondo azul claro
     cout << "\tPROGRAMA DE CONTROL DE UNA TURBINA" << endl;
     TurbinaControl control; //declaracion del objeto
     control.pedirDatos();

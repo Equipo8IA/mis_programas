@@ -1,5 +1,4 @@
 from pyswip import Prolog
-import tkinter as tk
 
 #Nicolás
 
@@ -17,7 +16,7 @@ t=""# taque_lleno
 def control_turvina_2(x,y,t):
    
     # Consultar la relación de parentesco
-    resultado = prolog.query(f"apagar_turbina({x}, {y}, {t})")
+    resultado = list(prolog.query("apagar_turbina({x}, {y}, {t})"))
 
     # Mostrar el resultado en la interfaz gráfica
     if resultado:
@@ -30,7 +29,7 @@ def control_turvina_2(x,y,t):
 def control_turvina_1(x,y,z,t):
    
     # Consultar la relación de parentesco
-    resultado = prolog.query(f"encender_turbina({x}, {y}, {z})")
+    resultado = list(prolog.query("encender_turbina({x}, {y}, {z})"))
 
     # Mostrar el resultado en la interfaz gráfica
     if resultado:
@@ -39,28 +38,33 @@ def control_turvina_1(x,y,z,t):
         control_turvina_2(x,y,t)
 
 def preguntar(): #Funcion para preguntar
-  boton=0
+  boton=""
 
-  while boton!=1 or boton!=2:
-   boton = int(input("El sensor esta encendido o apagado ?"))
-   if boton == 1:
+  while boton!="s" or boton!="n":
+   boton = str(input("Precione (s) para encendido o  (n) para apagado ?"))
+   if boton == "s":
     return "encendido"
 
-   elif boton == 2:
+   elif boton == "n":
     return "apagado"
 
 
 #main
 
-print("El tanque poca agua ?")
-x=preguntar() # tanque_poca_agua
-print("La cisterna poca agua ?")
+print("El sensor de tanque poca agua ?")
+x=preguntar()# tanque_poca_agua
+print(x)
+print("El sensor de la cisterna poca agua ?")
 y=preguntar() # cisterna_poca_agua
-print("La turbina esta ?")
+print(y)
+print("El sensor de la turbina esta ?")
 z=preguntar() # turbina
-print("El taque lleno ?")
+print(z)
+print("El sensor del taque lleno ?")
 t=preguntar() # taque_lleno
+print(t)
 
 control_turvina_1(x,y,z,t)
 
 #Nicolás :)
+

@@ -13,12 +13,12 @@ def Comprobar():
     nombre1 = entry_nombre1.get()  # Obtener el dato ingresado para tanque_poca_agua
     nombre2 = entry_nombre2.get()  # Obtener el dato ingresado para cisterna_poca_agua
     nombre3 = entry_nombre3.get()  # Obtener el dato ingresado para turbina
-    nombre4 = entry_nombre4.get()  # Obtener el dato ingresado para taque_lleno
+    nombre4 = entry_nombre4.get()  # Obtener el dato ingresado para tanque_lleno
 
     #X para tanque_poca_agua
     #Y para cisterna_poca_agua
     #T para turbina
-    #Z para taque_lleno
+    #Z para tanque_lleno
 
     #Regla:
     #encender_turbina( X, Y, T, Z)

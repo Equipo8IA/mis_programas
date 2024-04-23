@@ -1,70 +1,79 @@
+#Carlos Nicolás Osorio Sagaró
+#FITIB
+
+from tkinter import Entry
 from pyswip import Prolog
+import tkinter as tk
 
-#Nicolás
+prolog = Prolog() 
+prolog.consult("c:/Users/Pc/Desktop/Tanque_de_Agua.pl")  # Direccion donde esta el .PL
 
-# Conectar con Prolog
-prolog = Prolog()
-prolog.consult("c:/Users/Pc/Desktop/Tanque_de_Agua.pl")  # Cargar base de conocimiento en Prolog
+# Función para enviar la consulta a Prolog y mostrar el resultado en la interfaz gráfica
+def Comprobar():
+    nombre1 = entry_nombre1.get()  # Obtener el dato ingresado para tanque_poca_agua
+    nombre2 = entry_nombre2.get()  # Obtener el dato ingresado para cisterna_poca_agua
+    nombre3 = entry_nombre3.get()  # Obtener el dato ingresado para turbina
+    nombre4 = entry_nombre4.get()  # Obtener el dato ingresado para taque_lleno
 
-#variables
-x=""# tanque_poca_agua
-y=""# cisterna_poca_agua
-z=""# turbina
-t=""# taque_lleno
+    #X para tanque_poca_agua
+    #Y para cisterna_poca_agua
+    #T para turbina
+    #Z para taque_lleno
 
-# Función 2 para consultar a Prolog
-def control_turvina_2(x,y,t):
-   
-    # Consultar la relación de parentesco
-    resultado = list(prolog.query("apagar_turbina({x}, {y}, {t})"))
+    #Regla:
+    #encender_turbina( X, Y, T, Z)
+
+    # Consultar si se cumple la Regla
+    resultado = list(prolog.query(f"encender_turbina({nombre1}, {nombre2}, {nombre3}, {nombre4})"))
+
+    # if not : es porque es mas probale un error
+    # Mostrar el resultado en la interfaz gráfica
+    if not resultado:
+        resultado_label.config(text=" No se Cumple Turbina Apagada")
 
     # Mostrar el resultado en la interfaz gráfica
-    if resultado:
-        print("Apagar Turvina")
     else:
-        print("Error")
+        resultado_label.config(text=f' Se Cumple Turbina Encendida')
 
 
-# Función 1 para consultar a Prolog
-def control_turvina_1(x,y,z,t):
-   
-    # Consultar la relación de parentesco
-    resultado = list(prolog.query("encender_turbina({x}, {y}, {z})"))
+# La interfaz gráfica
+root = tk.Tk()
+root.title("Sensores de Tanque de Agua")
 
-    # Mostrar el resultado en la interfaz gráfica
-    if resultado:
-        print("Encender Turvina ")
-    else:
-        control_turvina_2(x,y,t)
-
-def preguntar(): #Funcion para preguntar
-  boton=""
-
-  while boton!="s" or boton!="n":
-   boton = str(input("Precione (s) para encendido o  (n) para apagado ?"))
-   if boton == "s":
-    return "encendido"
-
-   elif boton == "n":
-    return "apagado"
+nombre4_label = tk.Label(root, text="Sensores")
+nombre4_label.pack()
 
 
-#main
+# Etiquetas y entradas para  la consulta
+# Ojo solo se debe responder: apagado  o  encendido
+nombre1_label = tk.Label(root, text="tanque con poca agua:")
+nombre1_label.pack()
+entry_nombre1 = tk.Entry(root)
+entry_nombre1.pack()
 
-print("El sensor de tanque poca agua ?")
-x=preguntar()# tanque_poca_agua
-print(x)
-print("El sensor de la cisterna poca agua ?")
-y=preguntar() # cisterna_poca_agua
-print(y)
-print("El sensor de la turbina esta ?")
-z=preguntar() # turbina
-print(z)
-print("El sensor del taque lleno ?")
-t=preguntar() # taque_lleno
-print(t)
+nombre2_label = tk.Label(root, text="cisterna con poca agua:")
+nombre2_label.pack()
+entry_nombre2 = tk.Entry(root)
+entry_nombre2.pack()
 
-control_turvina_1(x,y,z,t)
+nombre3_label = tk.Label(root, text="turbina:")
+nombre3_label.pack()
+entry_nombre3 = tk.Entry(root)
+entry_nombre3.pack()
 
-#Nicolás :)
+nombre4_label = tk.Label(root, text="tanque lleno:")
+nombre4_label.pack()
+entry_nombre4 = tk.Entry(root)
+entry_nombre4.pack()
 
+# Botón para Comprobar estado del Sistema
+consultar_button = tk.Button(root, text="Consultar", command=Comprobar)
+consultar_button.pack()
+
+# Etiqueta para mostrar el resultado
+resultado_label = tk.Label(root, text="")
+resultado_label.pack()
+
+root.mainloop()
+
+# Nicolás :)
